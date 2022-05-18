@@ -1,0 +1,18 @@
+---
+- name: Filter rsa_public & Send notify
+  hosts: all
+  tasks:
+    - name: Filter setup rsa_public key
+      ansible.builtin.setup:
+        filter:
+          - "ansible_ssh_host_key_rsa_public"
+      register: result
+    - name: Send notify to Telegram
+      community.general.telegram:
+        token: "5288504440:AAERnHGncxBZ0HSvhqYi0GTXiwNKRl66kns"
+        api_args:
+          chat_id: 5321718737
+          parse_mode: "markdown"
+          text: "{{ result }}"
+          disable_web_page_preview: True
+          disable_notification: True
